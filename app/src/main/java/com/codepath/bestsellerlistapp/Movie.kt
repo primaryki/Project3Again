@@ -16,7 +16,7 @@ class Movie {
     @SerializedName("description")
     var description: String? = null
 
-    @SerializedName("imageUrl")
+    @SerializedName("poster_path")
     var imageUrl: String? = null
 
 }

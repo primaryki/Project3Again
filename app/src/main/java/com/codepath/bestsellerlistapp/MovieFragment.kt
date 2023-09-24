@@ -16,6 +16,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.Headers
+import org.json.JSONObject
 
 // --------------------------------//
 // CHANGE THIS TO BE YOUR API KEY  //
@@ -44,12 +45,13 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
 
         // Create and set up an AsyncHTTPClient() here
         val client = AsyncHttpClient()
+        val apiUrl = "https://api.themoviedb.org/3/movie/11?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
         val params = RequestParams()
         params["api-key"] = API_KEY
 
         // Using the client, perform the HTTP request
         client[
-            "https://api.themoviedb.org/3/movie/11?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed",
+            apiUrl,
             params,
             object : JsonHttpResponseHandler()
 
@@ -60,15 +62,16 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                     headers: Headers,
                     json: JsonHttpResponseHandler.JSON
                 ) {
-                    Log.d("DEBUG ARRAY", json.jsonArray.toString())
-                    Log.d("DEBUG OBJECT", json.jsonObject.toString())
+                    //Log.d("DEBUG ARRAY", json.jsonArray.toString())
+                    //Log.d("DEBUG OBJECT", json.jsonObject.toString())
                     // The wait for a response is over
                     progressBar.hide()
 
                     //TODO - Parse JSON into Models
                     try {
-                        //val resultsJSON: JSONObject = json.jsonObject
-                        val moviesRawJSON: String = json.jsonObject.get("results").toString()
+                        val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
+                        val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
+
                         val gson = Gson() //Step 2c
                         val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
 
@@ -79,7 +82,7 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                             MovieRecyclerViewAdapter(models, this@MovieFragment)
                     } catch (e: Exception) {
                         // Look for this in Logcat:
-                        Log.e("BestSellerBooksFragment", "Error parsing JSON: ${e.message}")
+                        Log.e("MovieFragment", "Error parsing JSON: ${e.message}")
                     }
                 }
 
@@ -96,12 +99,12 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                     // The wait for a response is over
                     progressBar.hide()
                     Log.e(
-                        "BestSellerBooksFragment",
+                        "MovieFragment",
                         "API request failed with status code $statusCode"
                     )
                     // If the error is not null, log it!
                     t?.message?.let {
-                        Log.e("BestSellerBooksFragment", it)
+                        Log.e("MovieFragment", it)
                     }
                 }
             }]

@@ -13,7 +13,7 @@ class Movie {
     @SerializedName("original_title")
     var title: String? = null
 
-    @SerializedName("description")
+    @SerializedName("overview")
     var description: String? = null
 
     @SerializedName("poster_path")

@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.RequestParams
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.Headers
+import org.json.JSONArray
 import org.json.JSONObject
 
 // --------------------------------//
@@ -69,17 +71,29 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
 
                     //TODO - Parse JSON into Models
                     try {
-                        val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
-                        val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
+                        //val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
+                        //val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
 
                         val gson = Gson() //Step 2c
                         val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
 
 
-                        val models: List<Movie> =
-                            gson.fromJson(moviesRawJSON, arrayMovieType)
+                        /*val models: List<Movie> =
+                            gson.fromJson(json.jsonArray.toString(), arrayMovieType)
                         recyclerView.adapter =
-                            MovieRecyclerViewAdapter(models, this@MovieFragment)
+                            MovieRecyclerViewAdapter(models, this@MovieFragment)*/
+                        if (json is JSONObject) {
+                            // Assuming that the JSON response is an object containing movie data
+                            val movie = gson.fromJson(json.toString(), Movie::class.java)
+                            val models = listOf(movie)
+                            recyclerView.adapter = MovieRecyclerViewAdapter(models, this@MovieFragment)
+                        } else if (json is JSONArray) {
+                            // Assuming that the JSON response is an array of movie objects
+                            val models: List<Movie> = gson.fromJson(json.toString(), arrayMovieType)
+                            recyclerView.adapter = MovieRecyclerViewAdapter(models, this@MovieFragment)
+                        } else {
+                            Log.e("MovieFragment", "Unknown JSON format")
+                        }
                     } catch (e: Exception) {
                         // Look for this in Logcat:
                         Log.e("MovieFragment", "Error parsing JSON: ${e.message}")
@@ -114,7 +128,7 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
         */
     }
     override fun onItemClick(item: Movie) {
-        Toast.makeText(context, "test: " + item.title, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Title: ${item.title}\nDescription: ${item.description}", Toast.LENGTH_LONG).show()
     }
 }
 

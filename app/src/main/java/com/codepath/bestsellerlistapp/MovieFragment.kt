@@ -17,6 +17,7 @@ import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.Headers
+import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -62,21 +63,40 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                 override fun onSuccess(
                     statusCode: Int,
                     headers: Headers,
-                    json: JsonHttpResponseHandler.JSON
+                    response: JSON
                 ) {
                     //Log.d("DEBUG ARRAY", json.jsonArray.toString())
                     //Log.d("DEBUG OBJECT", json.jsonObject.toString())
-                    // The wait for a response is over
-                    progressBar.hide()
+
+                    progressBar.hide()  // The wait for a response is over
 
                     //TODO - Parse JSON into Models
+                    val movie = Gson().fromJson(response.toString(), Movie::class.java)
+                    val movieList = listOf(movie)
+                    recyclerView.adapter = MovieRecyclerViewAdapter(movieList, this@MovieFragment)
+
+                    /*Help with Debugging to try to find the fatal exception cause
+                    try {
+                        // Parse the JSON response into a Movie object
+                        val movie = Gson().fromJson(response.toString(), Movie::class.java)
+
+                        // Now you have a single Movie object, you can do something with it
+                        // For example, you can display it in the RecyclerView adapter
+                        val movieList = listOf(movie)
+                        recyclerView.adapter = MovieRecyclerViewAdapter(movieList, this@MovieFragment)
+                    } catch (e: Exception) {
+                        // Handle parsing exception
+                        Log.e("MovieFragment", "Error parsing JSON: ${e.message}")
+                        Log.e("MovieFragment", "Raw JSON response: $response")
+                        // Handle the error gracefully, e.g., display an error message to the user.
+                    }*/
+
                     //val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
                     //val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
 
-                    val gson = Gson() //Step 2c
+                    /*val gson = Gson() //Step 2c
                     val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
-
-                    /*val models: List<Movie> =
+                    val models: List<Movie> =
                             gson.fromJson(json.jsonArray.toString(), arrayMovieType)
                         recyclerView.adapter =
                             MovieRecyclerViewAdapter(models, this@MovieFragment)*/
@@ -110,4 +130,5 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
         Toast.makeText(context, "Title: ${item.title}\nDescription: ${item.description}", Toast.LENGTH_LONG).show()
     }
 }
+
 

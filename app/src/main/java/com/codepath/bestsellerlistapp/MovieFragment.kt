@@ -70,7 +70,6 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                     progressBar.hide()
 
                     //TODO - Parse JSON into Models
-                    try {
                         //val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
                         //val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
 
@@ -82,6 +81,7 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                             gson.fromJson(json.jsonArray.toString(), arrayMovieType)
                         recyclerView.adapter =
                             MovieRecyclerViewAdapter(models, this@MovieFragment)*/
+
                         if (json is JSONObject) {
                             // Assuming that the JSON response is an object containing movie data
                             val movie = gson.fromJson(json.toString(), Movie::class.java)
@@ -94,11 +94,11 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                         } else {
                             Log.e("MovieFragment", "Unknown JSON format")
                         }
-                    } catch (e: Exception) {
+
                         // Look for this in Logcat:
-                        Log.e("MovieFragment", "Error parsing JSON: ${e.message}")
+                        //Log.e("MovieFragment", "Error parsing JSON: ${e.message}")
                     }
-                }
+
 
                 /*
              * The onFailure function gets called when

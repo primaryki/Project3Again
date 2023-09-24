@@ -6,7 +6,7 @@ import com.codepath.bestsellerlistapp.R.id
 
 /**
  * The MainActivity for the BestSellerList app.
- * Launches a [BestSellerBooksFragment].
+ * Creates a [BestSellerBooksFragment].
  */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

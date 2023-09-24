@@ -13,8 +13,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".BestSellerBooksFragment"
-        tools:listitem="@layout/fragment_best_seller_book" />
+        tools:context=".MovieFragment"
+        tools:listitem="@layout/movie_fragment" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress"

@@ -8,27 +8,15 @@ import com.google.gson.annotations.SerializedName
  * SerializedName tags MUST match the JSON response for the
  * object to correctly parse with the gson library.
  */
-class BestSellerBook {
+class Movie {
 
-    @SerializedName("rank")
-    var rank = 0
-
-    @JvmField
-    @SerializedName("title")
+    @SerializedName("original_title")
     var title: String? = null
 
-    @JvmField
-    @SerializedName("author")
-    var author: String? = null
-
-    //TODO bookImageUrl
-    @SerializedName("book_image")
-    var bookImageUrl: String? = null
-
-
-    //TODO description
     @SerializedName("description")
     var description: String? = null
 
-    //TODO-STRETCH-GOALS amazonUrl
+    @SerializedName("imageUrl")
+    var imageUrl: String? = null
+
 }

@@ -70,40 +70,19 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
                     progressBar.hide()
 
                     //TODO - Parse JSON into Models
-                        //val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
-                        //val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
+                    //val resultsJSON: JSONObject = json.jsonObject.getJSONObject("results")
+                    //val moviesRawJSON: String = resultsJSON.getJSONArray("movies").toString()
 
-                        val gson = Gson() //Step 2c
-                        val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
+                    val gson = Gson() //Step 2c
+                    val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
 
-
-                        /*val models: List<Movie> =
+                    /*val models: List<Movie> =
                             gson.fromJson(json.jsonArray.toString(), arrayMovieType)
                         recyclerView.adapter =
                             MovieRecyclerViewAdapter(models, this@MovieFragment)*/
+                }
+             //The onFailure function gets called when HTTP response status is "4XX" (eg. 401, 403, 404)
 
-                        if (json is JSONObject) {
-                            // Assuming that the JSON response is an object containing movie data
-                            val movie = gson.fromJson(json.toString(), Movie::class.java)
-                            val models = listOf(movie)
-                            recyclerView.adapter = MovieRecyclerViewAdapter(models, this@MovieFragment)
-                        } else if (json is JSONArray) {
-                            // Assuming that the JSON response is an array of movie objects
-                            val models: List<Movie> = gson.fromJson(json.toString(), arrayMovieType)
-                            recyclerView.adapter = MovieRecyclerViewAdapter(models, this@MovieFragment)
-                        } else {
-                            Log.e("MovieFragment", "Unknown JSON format")
-                        }
-
-                        // Look for this in Logcat:
-                        //Log.e("MovieFragment", "Error parsing JSON: ${e.message}")
-                    }
-
-
-                /*
-             * The onFailure function gets called when
-             * HTTP response status is "4XX" (eg. 401, 403, 404)
-             */
                 override fun onFailure(
                     statusCode: Int,
                     headers: Headers?,

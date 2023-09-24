@@ -49,10 +49,9 @@ class MovieFragment : Fragment(), OnListFragmentInteractionListener {
 
         // Using the client, perform the HTTP request
         client[
-            "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+            "https://api.themoviedb.org/3/movie/11?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed",
             params,
             object : JsonHttpResponseHandler()
-
 
             {
 
